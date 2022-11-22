@@ -11,6 +11,7 @@ struct TlsSession : public Session {
     SSL* ssl_;
 
     TlsSession(int sock = 0, SSL* ssl = 0);
+	virtual ~TlsSession();
 
     int read(char* buf, int size) override;
     int write(char* buf, int size) override;

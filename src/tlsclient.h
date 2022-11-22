@@ -1,11 +1,12 @@
 #pragma once
 
+#include "client.h"
 #include "tcpclient.h"
 #include "tlssession.h"
 
-struct TlsClient : public TcpClient, public TlsSession {
-    SSL_CTX *ctx_;
+struct TlsClient : public Client, public TlsSession {
+	TcpClient tcpClient_;
+	SSL_CTX *ctx_{nullptr};
 
-    TlsClient();
     bool connect(std::string host, int port) override;
 };
