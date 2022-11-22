@@ -3,6 +3,7 @@ CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 INCLUDEPATH += ../../src
+DESTDIR=../../bin
 SOURCES += \
         ../../src/tcpserver.cpp \
         ../../src/tcpsession.cpp \

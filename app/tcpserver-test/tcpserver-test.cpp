@@ -7,7 +7,19 @@
 struct ChatServer : public TcpServer {
 protected:
 	void run(Session* session) override {
-		// TO DO
+		std::puts("connected");
+		char buf[256];
+		while (true) {
+			int res = session->read(buf, 256);
+			if (res <= 0) break;
+			buf[res] = '\0';
+			std::puts(buf);
+			sessions_.lock();
+			for (TcpSession* session: sessions_)
+				session->write(buf, res);
+			sessions_.unlock();
+		}
+		std::puts("disconnected");
 	}
 };
 

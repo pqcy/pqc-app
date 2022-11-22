@@ -1,5 +1,14 @@
 #pragma once
 
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <sys/socket.h>
+#include <sys/socket.h>
+
 #include "session.h"
 
 struct TcpSession : public Session {
@@ -11,3 +20,4 @@ struct TcpSession : public Session {
 	int write(char* buf, int size) override;
 	bool close() override;
 };
+typedef TcpSession *PTcpSession;

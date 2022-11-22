@@ -21,6 +21,7 @@ struct Param {
 };
 
 void readAndPrint(Session* session) {
+	std::puts("connected");
 	char buf[256];
 	while (true) {
 		int res = session->read(buf, 256);
@@ -28,16 +29,7 @@ void readAndPrint(Session* session) {
 		buf[res] = '\0';
 		std::puts(buf);
 	}
-}
-
-void inputAndWrite(Session* session) {
-	while (true) {
-		std::string msg;
-		std::getline(std::cin, msg);
-		if (msg == "quit") break;
-		int writeLen = session->write(msg.data(), msg.size());
-		if (writeLen == -1) break;
-	}
+	std::puts("disconnected");
 }
 
 int main(int argc, char* argv[]) {
@@ -54,11 +46,13 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	std::thread* thread1 = new std::thread(&readAndPrint, &tc);
-	std::thread* thread2 = new std::thread(&inputAndWrite, &tc);
+	std::thread thread(&readAndPrint, &tc);
 
-	thread1->join();
-	thread2->join();
-
+	while (true) {
+		std::string msg;
+		std::getline(std::cin, msg);
+		int writeLen = tc.write(msg.data(), msg.size());
+		if (writeLen == -1) break;
+	}
 	tc.close();
 }

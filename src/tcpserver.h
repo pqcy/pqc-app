@@ -10,9 +10,13 @@
 struct TcpServer : public Server {
 	int acceptSock_;
 
-	std::mutex m_;
-	std::list<TcpSession*> sessions_;
-	std::list<std::thread*> threads_;
+	struct TcpSessionList :  std::list<TcpSession*> {
+	protected:
+		std::mutex m_;
+	public:
+		void lock() { m_.lock(); }
+		void unlock() { m_.unlock(); }
+	} sessions_;
 
 	bool start(int port) override;
 	bool stop() override;
@@ -20,5 +24,5 @@ struct TcpServer : public Server {
 private:
 	std::thread* acceptThread_{nullptr};
 	void acceptRun();
-	void _run(int newsock);
+	void _run(TcpSession* session);
 };

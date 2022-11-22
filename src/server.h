@@ -11,5 +11,5 @@ struct Server {
 	virtual bool stop() = 0;
 
 protected:
-	virtual void run(Session* sessoin) = 0;
+	virtual void run(Session* session) = 0;
 };
