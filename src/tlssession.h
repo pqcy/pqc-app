@@ -1,10 +1,11 @@
 #pragma once
 
-#include "session.h"
-#include <sys/socket.h>
+#include <assert.h>
 #include <unistd.h>
+#include <sys/socket.h>
 #include <openssl/ssl.h>
-#include <cassert>
+
+#include "session.h"
 
 struct TlsSession : public Session {
 	int sock_;
