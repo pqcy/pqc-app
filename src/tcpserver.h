@@ -10,7 +10,7 @@
 struct TcpServer : public Server {
 	int acceptSock_;
 
-	struct TcpSessionList :  std::list<TcpSession*> {
+	struct TcpSessionList : std::list<TcpSession*> {
 	protected:
 		std::mutex m_;
 	public:

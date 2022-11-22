@@ -3,21 +3,21 @@
 bool TlsClient::connect(std::string host, int port) {
 	if (!tcpClient_.connect(host, port)) {
 		error_ = tcpClient_.error_;
-        return false;
+		return false;
 	}
 
-    OpenSSL_add_all_algorithms();  /* Load cryptos, et.al. */
-    SSL_load_error_strings();   /* Bring in and register error messages */
+	OpenSSL_add_all_algorithms(); /* Load cryptos, et.al. */
+	SSL_load_error_strings(); /* Bring in and register error messages */
 
 	const SSL_METHOD *method = TLS_client_method();
-    ctx_ = SSL_CTX_new(method);
-    assert(ctx_ != nullptr);
+	ctx_ = SSL_CTX_new(method);
+	assert(ctx_ != nullptr);
 
 	sock_ = tcpClient_.sock_;
-    ssl_ = SSL_new(ctx_);
-    assert(ssl_ != nullptr);
+	ssl_ = SSL_new(ctx_);
+	assert(ssl_ != nullptr);
 
-    SSL_set_fd(ssl_, sock_);
+	SSL_set_fd(ssl_, sock_);
 
 	int res = SSL_connect(ssl_);
 	if (res <= 0) {

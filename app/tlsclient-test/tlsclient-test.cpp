@@ -15,8 +15,8 @@ struct Param {
 	}
 
 	static void usage() {
-        printf("syntax : tlsclient-test <host> <port>\n");
-        printf("sample : tlsclient-test <host> <port>\n");
+		printf("syntax : tlsclient-test <host> <port>\n");
+		printf("sample : tlsclient-test <host> <port>\n");
 	}
 };
 
@@ -33,7 +33,7 @@ void readAndPrint(Session* session) {
 }
 
 int main(int argc, char* argv[]) {
-    TlsClient tc;
+	TlsClient tc;
 
 	Param param;
 	if (!param.parse(argc, argv)) {

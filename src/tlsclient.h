@@ -8,5 +8,5 @@ struct TlsClient : public Client, public TlsSession {
 	TcpClient tcpClient_;
 	SSL_CTX *ctx_{nullptr};
 
-    bool connect(std::string host, int port) override;
+	bool connect(std::string host, int port) override;
 };

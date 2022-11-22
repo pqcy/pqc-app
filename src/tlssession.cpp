@@ -1,8 +1,8 @@
 #include "tlssession.h"
 
 TlsSession::TlsSession(int sock, SSL* ssl) {
-    sock_ = sock;
-    ssl_ = ssl;
+	sock_ = sock;
+	ssl_ = ssl;
 }
 
 TlsSession::~TlsSession() {
@@ -35,5 +35,5 @@ bool TlsSession::close() {
 		::close(sock_);
 		sock_ = 0;
 	}
-    return true;
+	return true;
 }
