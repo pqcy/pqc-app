@@ -30,6 +30,7 @@ void readAndPrint(Session* session) {
 		std::puts(buf);
 	}
 	std::puts("disconnected");
+    exit(0);
 }
 
 int main(int argc, char* argv[]) {

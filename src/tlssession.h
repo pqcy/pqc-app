@@ -2,8 +2,10 @@
 
 #include <assert.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include <sys/socket.h>
 #include <openssl/ssl.h>
+#include <openssl/err.h>
 
 #include "session.h"
 

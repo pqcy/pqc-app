@@ -2,9 +2,9 @@
 #include <iostream>
 #include <thread>
 
-#include "tcpserver.h"
+#include "tlsserver.h"
 
-struct ChatServer : public TcpServer {
+struct ChatServer : public TlsServer {
 protected:
 	void run(Session* session) override {
 		std::puts("connected");
@@ -15,7 +15,7 @@ protected:
 			buf[res] = '\0';
 			std::puts(buf);
 			sessions_.lock();
-			for (TcpSession* session: sessions_)
+            for (TlsSession* session: sessions_)
 				session->write(buf, res);
 			sessions_.unlock();
 		}
@@ -33,8 +33,8 @@ struct Param {
 	}
 
 	static void usage() {
-		printf("syntax : tcpserver-test <port>\n");
-		printf("sample : tcpserver-test <port>\n");
+        printf("syntax : tlsserver-test <port>\n");
+        printf("sample : tlsserver-test <port>\n");
 	}
 };
 
@@ -45,15 +45,16 @@ int main(int argc, char* argv[]) {
 	if (!param.parse(argc, argv)) {
 		Param::usage();
 		return -1;
-	}
-
-	if (!cs.start(param.port_)) {
+    }
+    cs.pemFileName_ = "/home/user/project/git/pqc-app/src/crt/rootCA.pem";
+            //명시안하면
+    if (!cs.start(param.port_)) {
 		std::cerr << cs.error_ << std::endl;
 		return -1;
 	}
 
 	while (true) {
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	cs.stop();

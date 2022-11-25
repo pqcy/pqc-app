@@ -3,13 +3,14 @@ CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 INCLUDEPATH += ../../src
+LIBS += -lssl -lcrypto
 DESTDIR=../../bin
 SOURCES += \
         ../../src/tcpserver.cpp \
         ../../src/tcpsession.cpp \
         ../../src/tlsserver.cpp \
         ../../src/tlssession.cpp \
-        tcpserver-test.cpp
+        tlsserver-test.cpp
 
 HEADERS += \
 	../../src/server.h \

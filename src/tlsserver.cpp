@@ -1,8 +1,34 @@
-#include "tcpserver.h"
+#include "tlsserver.h"
 
 #include <mutex>
 
-bool TcpServer::start(int port) {
+bool TlsServer::start(int port) {
+
+    OpenSSL_add_all_algorithms();  /* load & register all cryptos, etc. */
+    SSL_load_error_strings();   /* load all error messages */
+    const SSL_METHOD *method = TLS_server_method();  /* create new server-method instance */
+    ctx_ = SSL_CTX_new(method);   /* create new context from method */
+    if ( ctx_ == NULL )
+    {
+        ERR_print_errors_fp(stderr);
+        abort();
+    }
+
+    if ( SSL_CTX_use_certificate_file(ctx_, pemFileName_.data(), SSL_FILETYPE_PEM) <= 0 )
+        {
+            ERR_print_errors_fp(stderr);
+            abort();
+        }
+    if ( SSL_CTX_use_PrivateKey_file(ctx_, pemFileName_.data(), SSL_FILETYPE_PEM) <= 0 )
+        {
+            ERR_print_errors_fp(stderr);
+            abort();
+        }
+    if ( !SSL_CTX_check_private_key(ctx_) )
+        {
+            fprintf(stderr, "Private key does not match the public certificate\n");
+            abort();
+        }
 	acceptSock_ = ::socket(AF_INET, SOCK_STREAM, 0);
 	if (acceptSock_ == -1) {
 		error_ = strerror(errno);
@@ -36,20 +62,21 @@ bool TcpServer::start(int port) {
 		return false;
 	}
 
-	acceptThread_ = new std::thread(&TcpServer::acceptRun, this);
+    acceptThread_ = new std::thread(&TlsServer::acceptRun, this);
 	return true;
 }
 
-bool TcpServer::stop() {
+bool TlsServer::stop() {
 	::shutdown(acceptSock_, SHUT_RDWR);
 	::close(acceptSock_);
+//    ::SSL_CTX_free(ctx_);
 	if (acceptThread_ != nullptr) {
 		delete acceptThread_;
 		acceptThread_ = nullptr;
 	}
 
 	sessions_.lock();
-	for (TcpSession* session: sessions_)
+    for (TlsSession* session: sessions_)
 		session->close();
 	sessions_.unlock();
 
@@ -64,7 +91,7 @@ bool TcpServer::stop() {
 	return true;
 }
 
-void TcpServer::acceptRun() {
+void TlsServer::acceptRun() {
 	while (true) {
 		struct sockaddr_in addr;
 		socklen_t len = sizeof(addr);
@@ -72,14 +99,20 @@ void TcpServer::acceptRun() {
 		if (newSock == -1) {
 			error_ = strerror(errno);
 			break;
-		}
-		TcpSession* session = new TcpSession(newSock);
-		std::thread* thread = new std::thread(&TcpServer::_run, this, session);
+        }
+        SSL* ssl = SSL_new(ctx_);
+        SSL_set_fd(ssl, newSock);
+        if ( SSL_accept(ssl) == -1 )  {
+             ERR_print_errors_fp(stderr);
+             break;
+        }
+        TlsSession* session = new TlsSession(newSock, ssl);
+        std::thread* thread = new std::thread(&TlsServer::_run, this, session);
 		thread->detach();
 	}
 }
 
-void TcpServer::_run(TcpSession* session) {
+void TlsServer::_run(TlsSession* session) {
 	sessions_.lock();
 	sessions_.push_back(session);
 	sessions_.unlock();
