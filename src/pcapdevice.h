@@ -14,4 +14,4 @@ class PcapDevice{
     bool close();
     int read(struct pcap_pkthdr **pkt_header,const u_char **pkt_data);
     int write(const u_char *buf, int size);
-}
+};
