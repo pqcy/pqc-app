@@ -2,10 +2,7 @@ TEMPLATE = app
 CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
-
+INCLUDEPATH = ../../src
 SOURCES += \
-        rawsocket-test.cpp \
-        rawsocket.cpp
-
-HEADERS += \
-    rawsocket.h
+    ../../src/rawsocket.cpp\
+    rawsocket-test.cpp

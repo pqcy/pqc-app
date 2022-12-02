@@ -1,6 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS += \
-        rawsocket-test \
 	pqcclient-test \
 	pqcserver-test \
 	tcpclient-test \
