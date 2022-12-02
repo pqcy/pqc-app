@@ -5,11 +5,13 @@ CONFIG -= qt
 INCLUDEPATH += ../../src
 DESTDIR=../../bin
 SOURCES += \
+        ../../src/ip.cpp \
         ../../src/tcpserver.cpp \
         ../../src/tcpsession.cpp \
         tcpserver-test.cpp
 
 HEADERS += \
+        ../../src/ip.h \
 	../../src/server.h \
 	../../src/session.h \
 	../../src/tcpserver.h \

@@ -3,7 +3,7 @@
 #include <mutex>
 
 bool TcpServer::start(int port) {
-	acceptSock_ = ::socket(AF_INET, SOCK_STREAM, 0);
+    acceptSock_ = ::socket(AF_INET, SOCK_STREAM, 0);
 	if (acceptSock_ == -1) {
 		error_ = strerror(errno);
 		return false;
@@ -25,7 +25,7 @@ bool TcpServer::start(int port) {
 	addr.sin_port = htons(port);
 
 	ssize_t res2 = ::bind(acceptSock_, (struct sockaddr *)&addr, sizeof(addr));
-	if (res2 == -1) {
+    if (res2 == -1) {
 		error_ = strerror(errno);
 		return false;
 	}
@@ -41,7 +41,7 @@ bool TcpServer::start(int port) {
 }
 
 bool TcpServer::stop() {
-	::shutdown(acceptSock_, SHUT_RDWR);
+    ::shutdown(acceptSock_, SHUT_RDWR);
 	::close(acceptSock_);
 	if (acceptThread_ != nullptr) {
 		delete acceptThread_;
@@ -80,9 +80,9 @@ void TcpServer::acceptRun() {
 }
 
 void TcpServer::_run(TcpSession* session) {
-	sessions_.lock();
-	sessions_.push_back(session);
-	sessions_.unlock();
+    sessions_.lock();
+    sessions_.push_back(session);
+    sessions_.unlock();
 
 	run(session);
 
