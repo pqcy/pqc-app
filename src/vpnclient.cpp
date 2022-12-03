@@ -1,32 +1,38 @@
-#include "tlsclient.h"
+#include "vpnclient.h"
 
-bool TlsClient::connect(Ip ip, int port) {
-    if (!tcpClient_.connect(ip, port)) {
-		error_ = tcpClient_.error_;
-		return false;
-	}
+bool VpnClient::open(const char *dev, Ip ip, int port) {
+    if (!tcpClient_.connect(ip, port))
+        return false;
+    if (!pcapDevice_.open(dev, BUFSIZ, 1, 10))
+        return false;
+    if (!rawSocket_.open())
+        return false;
+    return true;
+}
 
-	OpenSSL_add_all_algorithms(); /* Load cryptos, et.al. */
-	SSL_load_error_strings(); /* Bring in and register error messages */
+bool VpnClient::close() {
+    tcpClient_.close();
+    pcapDevice_.close();
+    rawSocket_.close();
+    //thread close
+    return true;
+}
 
-	const SSL_METHOD *method = TLS_client_method();
-	ctx_ = SSL_CTX_new(method);
-	assert(ctx_ != nullptr);
+void VpnClient::captureAndWrite(struct pcap_pkthdr *header, const u_char *data, int size) { // pcap
+    while (true) {
+       if (!pcapDevice_.read(&header, &data))
+           continue;
+       if (!pcapDevice_.write(data, size))
+           continue;
+    }
+}
 
-	sock_ = tcpClient_.sock_;
-	ssl_ = SSL_new(ctx_);
-	assert(ssl_ != nullptr);
+void VpnClient::readAndSendMe(char *buf, int size) { // raw socket
 
-	SSL_set_fd(ssl_, sock_);
-
-	int res = SSL_connect(ssl_);
-	if (res <= 0) {
-		char buf[256];
-		int error_res = SSL_get_error(ssl_, res);
-		sprintf(buf, "SSL_connect return %d SSL_get_error=%d", res, error_res);
-		error_ = buf;
-		return false;
-	}
-
-	return true;
+    while (true) {
+        if (!rawSocket_.read(buf, size))
+            continue;
+        if (!rawSocket_.write(buf, size))
+            continue;
+    }
 }

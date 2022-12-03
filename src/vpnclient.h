@@ -1,12 +1,21 @@
 #pragma once
 
-#include "client.h"
+#include <cstdio>
 #include "tcpclient.h"
-#include "tlssession.h"
+#include "pcapdevice.h"
+#include "rawsocket.h"
+#include <thread>
 
-struct TlsClient : public Client, public TlsSession {
-	TcpClient tcpClient_;
-	SSL_CTX *ctx_{nullptr};
+struct VpnClient {
+    TcpClient tcpClient_;
+    PcapDevice pcapDevice_;
+    RawSocket rawSocket_;
+    std::thread* captureAndWriteThread_{nullptr};
+    std::thread* readAndSendMethread_{nullptr};
 
-    bool connect(Ip ip, int port) override;
+    bool open(const char *dev, Ip ip, int port);
+    bool close();
+
+    void captureAndWrite(struct pcap_pkthdr *header, const u_char *data, int size);
+    void readAndSendMe(char *buf, int size);
 };

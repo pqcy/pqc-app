@@ -5,4 +5,5 @@ SUBDIRS += \
 	tcpclient-test \
 	tcpserver-test \
 	tlsclient-test \
-	tlsserver-test
+	tlsserver-test \
+	vpnclient-test
