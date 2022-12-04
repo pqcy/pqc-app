@@ -3,28 +3,22 @@
 #include <list>
 #include <mutex>
 #include <thread>
+#include <map>
 
-#include "server.h"
-#include "tlssession.h"
+#include "tcpserver.h"
+#include "pcapdevice.h"
+#include "ip.h"
+#include "mac.h"
 
-struct TlsServer : public Server {
-    int acceptSock_;
-    SSL_CTX *ctx_;
+struct VpnServer : TcpServer {
+    struct ClientInfo {
+        PcapDevice pcapDevice_;
+        Mac mac_;
+        Ip ip_;
+    };
 
-    struct TlsSessionList : std::list<TlsSession*> {
-    protected:
-        std::mutex m_;
-    public:
-        void lock() { m_.lock(); }
-        void unlock() { m_.unlock(); }
-    } sessions_;
+    struct ClientInfoMap : std::map<Mac, ClientInfo> {
+    } cim_;
 
-    std::string pemFileName_;
-    bool start(int port) override;
-    bool stop() override;
-
-private:
-    std::thread* acceptThread_{nullptr};
-    void acceptRun();
-    void _run(TlsSession* session);
+    void run(Session* session) override;
 };
