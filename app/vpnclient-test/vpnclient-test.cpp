@@ -1,33 +1,27 @@
 #include "vpnclient.h"
 
-void usage()
-{
-    printf("syntax: vpnclient <dummy interface name> <real interface name> <server ip> <server port>\n");
-    printf("vpnclient dum0 wlan0 10.1.1.2 12345\n");
-}
-
-typedef struct
-{
+struct Param {
     char *dumDev_;
     char *realDev_;
-} Param;
+    Ip ip_;
+    int port_;
 
-Param param = {
-    .dumDev_ = NULL,
-    .realDev_ = NULL
-};
+    bool parse(int argc, char** argv) {
+        if (argc != 5) return false;
 
-bool parse(Param *param, int argc, char *argv[])
-{
-    if (argc != 5)
-    {
-        usage();
-        return false;
+        dumDev_ = argv[1];
+        realDev_ = argv[2];
+        ip_ = inet_addr(argv[3]);
+        port_ = std::stoi(argv[1]);
+        return true;
     }
-    param->dumDev_ = argv[1];
-    param->realDev_ = argv[2];
-    return true;
-}
+
+    static void usage()
+    {
+        printf("syntax: vpnclient <dummy interface name> <real interface name> <server ip> <server port>\n");
+        printf("vpnclient dum0 wlan0 10.1.1.2 12345\n");
+    }
+};
 
 int main(int argc, char *argv[])
 {
