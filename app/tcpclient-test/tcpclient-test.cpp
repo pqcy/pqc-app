@@ -1,15 +1,17 @@
 #include <iostream>
+#include <string>
 #include <thread>
 
+#include <netinet/in.h>
 #include "tcpclient.h"
 
 struct Param {
-	std::string host_;
+    Ip ip_;
 	int port_;
 
-	bool parse(int argc, char** argv) {
-		if (argc != 3) return false;
-		host_ = argv[1];
+    bool parse(int argc, char** argv) {
+        if (argc != 3) return false;
+        ip_ = Ip(inet_addr(argv[1]));
 		port_ = std::stoi(argv[2]);
 		return true;
 	}
@@ -24,7 +26,7 @@ void readAndPrint(Session* session) {
 	std::puts("connected");
 	char buf[256];
 	while (true) {
-		int res = session->read(buf, 256);
+        int res = session->read(buf, 256);
 		if (res <= 0) break;
 		buf[res] = '\0';
 		std::puts(buf);
@@ -41,8 +43,7 @@ int main(int argc, char* argv[]) {
 		Param::usage();
 		return -1;
 	}
-
-	if (!tc.connect(param.host_, param.port_)) {
+    if (!tc.connect(param.ip_, param.port_)) {
 		std::cerr << tc.error_ << std::endl;
 		return -1;
 	}
