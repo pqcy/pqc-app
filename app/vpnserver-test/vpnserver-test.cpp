@@ -33,5 +33,10 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    while (true) {
+        std::string s;
+        std::getline(std::cin, s);
+        if (s == "q") break;
+    }
     vs.stop();
 }
