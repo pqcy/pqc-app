@@ -5,5 +5,5 @@ CONFIG -= qt
 INCLUDEPATH = ../../src
 LIBS+=-lpcap
 SOURCES += \
-    ../../src/pcapdecice.cpp\
+    ../../src/pcapdevice.cpp\
     pcapdevice-test.cpp
