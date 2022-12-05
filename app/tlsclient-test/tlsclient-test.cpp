@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	if (!tc.connect(param.host_, param.port_)) {
+    if (!tc.connect(param.ip_, param.port_)) {
 		std::cerr << tc.error_ << std::endl;
 		return -1;
 	}
