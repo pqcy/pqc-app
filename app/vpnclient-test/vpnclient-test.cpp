@@ -1,49 +1,57 @@
+#include <iostream>
 #include "vpnclient.h"
+#include <libnet.h>
 
-struct Param {
+using namespace std;
+
+void usage()
+{
+    printf("syntax: vpnclient <dummy interface name> <real interface name> <server ip> <server port>\n");
+    printf("vpnclient dum0 wlan0 10.1.1.2 12345\n");
+}
+
+struct Param
+{
     char *dumDev_;
     char *realDev_;
-    Ip ip_;
+    string ip_;
     int port_;
+} param;
 
-    bool parse(int argc, char** argv) {
-        if (argc != 5) return false;
 
-        dumDev_ = argv[1];
-        realDev_ = argv[2];
-        ip_ = inet_addr(argv[3]);
-        port_ = std::stoi(argv[1]);
-        return true;
-    }
-
-    static void usage()
+bool parse(Param *param, int argc, char *argv[])
+{
+    if (argc != 5)
     {
-        printf("syntax: vpnclient <dummy interface name> <real interface name> <server ip> <server port>\n");
-        printf("vpnclient dum0 wlan0 10.1.1.2 12345\n");
+        usage();
+        return false;
     }
-};
+    param->dumDev_ = argv[1];
+    param->realDev_ = argv[2];
+    param->ip_ = Ip(inet_addr(argv[3]));
+    param->port_ = atoi(argv[4]);
+    return true;
+}
 
 int main(int argc, char *argv[])
 {
     VpnClient vc;
 
-    Param param;
-    if (!param.parse(argc, argv)) {
-        Param::usage();
+    if (!parse(&param, argc, argv))
+           return -1;
+
+    bool ok = vc.open(param.dumDev_, param.ip_, param.port_);
+    if(!ok){
+        printf("vc.open return false %s\n", vc.error_.data());
         return -1;
     }
 
-    if (!vc.tcpClient_.connect(param.ip_, param.port_)) {
-        printf("%s\n", vc.tcpClient_.error_.data());
-        return -1;
+    while(true) {
+
+        std::string s;
+        std::getline(std::cin, s);
+        if( s == "q" ) break;
+
     }
-//    struct pcap_pkthdr *header;
-//    const u_char *data;
-//    char *buf;
-//    int size = 4096;
-
-//    vc.captureAndWriteThread_(&VpnClient::captureAndWrite, header, data, size);
-//    vc.readAndSendMethread_(vc.readAndSendMe);
-
-    vc.tcpClient_.close();
+    vc.close();
 }
