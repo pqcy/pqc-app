@@ -11,6 +11,7 @@ SOURCES += \
         ../../src/tcpclient.cpp \
         ../../src/tcpsession.cpp \
         ../../src/vpnclient.cpp \
+        ../../src/ip.cpp \
         vpnclient-test.cpp
 
 HEADERS += \
@@ -20,4 +21,5 @@ HEADERS += \
         ../../src/session.h \
         ../../src/tcpclient.h \
         ../../src/tcpsession.h \
+        ../../src/ip.h \
         ../../src/vpnclient.h
