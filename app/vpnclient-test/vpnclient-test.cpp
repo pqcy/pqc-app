@@ -28,7 +28,7 @@ bool parse(Param *param, int argc, char *argv[])
     }
     param->dumDev_ = argv[1];
     param->realDev_ = argv[2];
-    param->ip_ = Ip(argv[3]);
+    //param->ip_ = Ip(argv[3]);
     param->port_ = atoi(argv[4]);
     return true;
 }
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     if (!parse(&param, argc, argv))
            return -1;
 
-    bool ok = vc.open(param.dumDev_, param.ip_, param.port_);
+    bool ok = vc.open(param.dumDev_, Ip(argv[3]), param.port_);
     if(!ok){
         printf("vc.open return false %s\n", vc.error_.data());
         return -1;
