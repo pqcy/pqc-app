@@ -11,6 +11,8 @@
 #include "mac.h"
 
 struct VpnServer : TcpServer {
+    const char* dev_;
+
     struct ClientInfo {
         PcapDevice pcapDevice_;
         Mac mac_;

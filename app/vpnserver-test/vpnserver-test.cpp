@@ -26,4 +26,12 @@ int main(int argc, char *argv[])
         Param::usage();
         return -1;
     }
+    vs.dev_ = param.dev_;
+
+    if (!vs.start(param.port_)) {
+        printf("%s\n", vs.error_.data());
+        return -1;
+    }
+
+    vs.stop();
 }
