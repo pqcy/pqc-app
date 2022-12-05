@@ -1,15 +1,16 @@
 #include <iostream>
 #include <thread>
 
+#include <netinet/in.h>
 #include "tlsclient.h"
 
 struct Param {
-	std::string host_;
+    Ip ip_;
 	int port_;
 
 	bool parse(int argc, char** argv) {
 		if (argc != 3) return false;
-		host_ = argv[1];
+        ip_ = Ip(inet_addr(argv[1]));
 		port_ = std::stoi(argv[2]);
 		return true;
 	}

@@ -1,7 +1,7 @@
 #include "tlsclient.h"
 
-bool TlsClient::connect(std::string host, int port) {
-	if (!tcpClient_.connect(host, port)) {
+bool TlsClient::connect(Ip ip, int port) {
+    if (!tcpClient_.connect(ip, port)) {
 		error_ = tcpClient_.error_;
 		return false;
 	}

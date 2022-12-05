@@ -1,15 +1,15 @@
 #include <iostream>
 #include <thread>
-
+#include <netinet/in.h>
 #include "tcpclient.h"
 
 struct Param {
-	std::string host_;
+    Ip ip_;
 	int port_;
 
 	bool parse(int argc, char** argv) {
 		if (argc != 3) return false;
-		host_ = argv[1];
+        ip_ = Ip(inet_addr(argv[1]));
 		port_ = std::stoi(argv[2]);
 		return true;
 	}
@@ -42,10 +42,10 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	if (!tc.connect(param.host_, param.port_)) {
+    if (!tc.connect(param.ip_, param.port_)) {
 		std::cerr << tc.error_ << std::endl;
 		return -1;
-	}
+    }
 
 	std::thread thread(&readAndPrint, &tc);
 
