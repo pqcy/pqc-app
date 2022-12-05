@@ -28,7 +28,7 @@ bool parse(Param *param, int argc, char *argv[])
     }
     param->dumDev_ = argv[1];
     param->realDev_ = argv[2];
-    param->ip_ = Ip(inet_addr(argv[3]));
+    param->ip_ = Ip(argv[3]);
     param->port_ = atoi(argv[4]);
     return true;
 }
