@@ -7,6 +7,7 @@
 #include <thread>
 
 struct VpnClient {
+    std::string error_;
     TcpClient tcpClient_;
     PcapDevice pcapDevice_;
     RawSocket rawSocket_;
@@ -16,6 +17,6 @@ struct VpnClient {
     bool open(const char *dev, Ip ip, int port);
     bool close();
 
-    void captureAndWrite(struct pcap_pkthdr *header, const u_char *data, int size);
-    void readAndSendMe(char *buf, int size);
+    void captureAndWrite();
+    void readAndSendMe();
 };
