@@ -49,9 +49,11 @@ void VpnClient::captureAndWrite() { // pcap
 void VpnClient::readAndSendMe() { // raw socket
 
     char *buf = NULL;
+    int size;
 
     while (true) {
-        if (!rawSocket_.read(buf, sizeof(buf)))
+        size = tcpClient_.read(buf, 4096);
+        if (size < 0)
             break;
         if (!rawSocket_.write(buf, sizeof(buf)))
             break;
