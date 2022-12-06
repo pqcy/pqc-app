@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     if (!parse(&param, argc, argv))
            return -1;
 
-    bool ok = vc.open(param.dumDev_, Ip(inet_addr(argv[3])), param.port_);
+    bool ok = vc.open(param.dumDev_, Ip(argv[3]), param.port_);
     if(!ok){
         printf("vc.open return false %s\n", vc.error_.data());
         return -1;
