@@ -22,5 +22,6 @@ struct VpnServer : TcpServer {
     struct ClientInfoMap : std::map<Mac, ClientInfo> {
     } cim_;
 
+    bool dhcp(Session* session, ClientInfo client);
     void run(Session* session) override;
 };
