@@ -1,3 +1,4 @@
+.vscode
 *.user
 bin/
 build-*/
