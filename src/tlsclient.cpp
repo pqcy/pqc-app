@@ -1,10 +1,51 @@
 #include "tlsclient.h"
 
+int config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
+               SSL_CTX *ctx)
+{
+    int i;
+
+    SSL_CONF_CTX_set_ssl_ctx(cctx, ctx);
+    for (i = 0; i < sk_OPENSSL_STRING_num(str); i += 2) {
+        const char *flag = sk_OPENSSL_STRING_value(str, i);
+        const char *arg = sk_OPENSSL_STRING_value(str, i + 1);
+        SSL_CONF_cmd(cctx, flag, arg);
+      /*
+        if (SSL_CONF_cmd(cctx, flag, arg) <= 0) {
+            if (arg != NULL)
+                BIO_printf(bio_err, "Error with command: \"%s %s\"\n",
+                           flag, arg);
+            else
+                BIO_printf(bio_err, "Error with command: \"%s\"\n", flag);
+            ERR_print_errors(bio_err);
+            return 0;
+        }
+      */
+    }
+    SSL_CONF_CTX_finish(cctx);
+    /*
+    if (!SSL_CONF_CTX_finish(cctx)) {
+        BIO_puts(bio_err, "Error finishing context\n");
+        ERR_print_errors(bio_err);
+        return 0;
+    }
+    */
+    return 1;
+}
+
 bool TlsClient::connect(Ip ip, int port) {
     if (!tcpClient_.connect(ip, port)) {
 		error_ = tcpClient_.error_;
 		return false;
 	}
+    /*for SSL_CONF_CTX flag set*/
+    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, "-groups") || !sk_OPENSSL_STRING_push(ssl_args_, "kyber512")){
+       printf("ssl_args setting fail");
+       goto end;
+    }
+    end:
+       sk_OPENSSL_STRING_free(ssl_args_);
+       return false;
 
 	OpenSSL_add_all_algorithms(); /* Load cryptos, et.al. */
 	SSL_load_error_strings(); /* Bring in and register error messages */
@@ -14,12 +55,16 @@ bool TlsClient::connect(Ip ip, int port) {
 	assert(ctx_ != nullptr);
 
 	sock_ = tcpClient_.sock_;
-	if(SSL_CTX_set1_groups_list(ctx_, "kyber512") <= 0){ /*kyber512 groups set*/
+    config_ctx(cctx_, ssl_args_, ctx_); //call config_ctx() -> setting flag and kyber512's nid
+    /*
+     * if(config_ctx(cctx_, ssl_args_, ctx_) <= 0){
 		char buf[256];
-		sprintf(buf, "SSL_CTX_set1_groups_list() error");
+        sprintf(buf, "config_ctx() error | tlsclient.cpp line: 62");
 		error_ = buf;
 		return false;
-	}
+        }
+    */
+
 	ssl_ = SSL_new(ctx_);
 	assert(ssl_ != nullptr);
 
