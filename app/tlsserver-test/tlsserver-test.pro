@@ -2,7 +2,9 @@ TEMPLATE = app
 CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
-INCLUDEPATH += ../../src
+INCLUDEPATH += ../../src \
+               ../../include \
+               ../../oqs/include
 LIBS += -lssl -lcrypto
 DESTDIR=../../bin
 SOURCES += \
