@@ -15,8 +15,8 @@ SOURCES += \
         tlsclient-test.cpp
 
 HEADERS += \
-	../../src/client.h \
-	../../src/session.h \
+        ../../src/client.h \
+        ../../src/session.h \
         ../../src/tcpclient.h \
         ../../src/tcpsession.h \
         ../../src/tlsclient.h \
