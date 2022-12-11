@@ -5,20 +5,20 @@ CONFIG -= qt
 INCLUDEPATH += ../../src
 DESTDIR=../../bin
 SOURCES += \
-        ../../src/tcpserver.cpp \
+        ../../src/tcpclient.cpp \
         ../../src/tcpsession.cpp \
-        ../../src/tlsserver.cpp \
+        ../../src/tlsclient.cpp \
         ../../src/tlssession.cpp \
-        tlsserver-test.cpp
+        tlsclient-test.cpp
 
 HEADERS += \
-	../../src/server.h \
-	../../src/session.h \
-	../../src/tcpserver.h \
-	../../src/tcpsession.h \
-	../../src/tlsserver.h \
-	../../src/tlssession.h
-
+        ../../src/client.h \
+        ../../src/session.h \
+        ../../src/tcpclient.h \
+        ../../src/tcpsession.h \
+        ../../src/tlsclient.h \
+        ../../src/tlssession.h
+        
 #libssl.a
 unix:!macx: LIBS += -L$$PWD/../../lib/ -lssl
 
