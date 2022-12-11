@@ -18,6 +18,7 @@ HEADERS += \
         ../../src/tcpsession.h \
         ../../src/tlsclient.h \
         ../../src/tlssession.h
+
 #libssl.a
 unix:!macx: LIBS += -L$$PWD/../../lib/ -lssl
 

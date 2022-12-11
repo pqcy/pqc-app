@@ -14,6 +14,12 @@ bool TlsClient::connect(Ip ip, int port) {
 	assert(ctx_ != nullptr);
 
 	sock_ = tcpClient_.sock_;
+	if(SSL_CTX_set1_groups_list(ctx_, "kyber512") <= 0){ /*kyber512 groups set*/
+		char buf[256];
+		sprintf(buf, "SSL_CTX_set1_groups_list() error");
+		error_ = buf;
+		return false;
+	}
 	ssl_ = SSL_new(ctx_);
 	assert(ssl_ != nullptr);
 
