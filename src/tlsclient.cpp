@@ -58,6 +58,8 @@ bool TlsClient::connect(Ip ip, int port) {
 
 	const SSL_METHOD *method = TLS_client_method();
 	ctx_ = SSL_CTX_new(method);
+	cctx_ = SSL_CONF_CTX_new();
+	SSL_CONF_CTX_set_flags(cctx_, SSL_CONF_FLAG_CLIENT | SSL_CONF_FLAG_CMDLINE);
 	assert(ctx_ != nullptr);
 
 	sock_ = tcpClient_.sock_;
