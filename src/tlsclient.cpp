@@ -47,11 +47,8 @@ bool TlsClient::connect(Ip ip, int port) {
 	}
     if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, groups_.data()) || !sk_OPENSSL_STRING_push(ssl_args_, alg_.data())){
        printf("ssl_args setting fail");
-       goto end;
+	   return false;
     }
-    end:
-       sk_OPENSSL_STRING_free(ssl_args_);
-       return false;
 
 	OpenSSL_add_all_algorithms(); /* Load cryptos, et.al. */
 	SSL_load_error_strings(); /* Bring in and register error messages */
