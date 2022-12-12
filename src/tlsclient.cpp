@@ -1,11 +1,10 @@
 #include "tlsclient.h"
 
 int config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
-               SSL_CTX *ctx)
-{
+               SSL_CTX *ctx){
     int i;
-
     SSL_CONF_CTX_set_ssl_ctx(cctx, ctx);
+
     for (i = 0; i < sk_OPENSSL_STRING_num(str); i += 2) {
         const char *flag = sk_OPENSSL_STRING_value(str, i);
         const char *arg = sk_OPENSSL_STRING_value(str, i + 1);
@@ -33,22 +32,20 @@ int config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
     return 1;
 }
 
-void set_ssl_algs(char* groups, char* alg){
-    char groupsBuf[8] = "-groups";
-    char algBuf[9] = "kyber512";
-    memcpy(groups, groupsBuf, sizeof(groupsBuf) * 8);
-    memcpy(alg, algBuf, sizeof(algBuf) * 9);
-}
 
 bool TlsClient::connect(Ip ip, int port) {
     if (!tcpClient_.connect(ip, port)) {
 		error_ = tcpClient_.error_;
 		return false;
 	}
-    set_ssl_algs(groups_, alg_);
+	std::string groups_ = "-groups";
+    std::string alg_ = "kyber512";
 
     /*for SSL_CONF_CTX flag set*/
-    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, groups_) || !sk_OPENSSL_STRING_push(ssl_args_, alg_)){
+	if (ssl_args_ == NULL){
+		ssl_args_ = sk_OPENSSL_STRING_new_null();
+	}
+    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, groups_.data()) || !sk_OPENSSL_STRING_push(ssl_args_, alg_.data())){
        printf("ssl_args setting fail");
        goto end;
     }
