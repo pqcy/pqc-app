@@ -33,13 +33,21 @@ int config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
     return 1;
 }
 
+void set_ssl_algs(char* groups, char* alg){
+    char groupsBuf[8] = "-groups";
+    char algBuf[9] = "kyber512";
+    memcpy(groups, groupsBuf, sizeof(groupsBuf));
+    memcpy(alg, algBuf, sizeof(algBuf));
+}
+
 bool TlsClient::connect(Ip ip, int port) {
     if (!tcpClient_.connect(ip, port)) {
 		error_ = tcpClient_.error_;
 		return false;
 	}
+    set_ssl_algs(groups_, alg_);
     /*for SSL_CONF_CTX flag set*/
-    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, "-groups") || !sk_OPENSSL_STRING_push(ssl_args_, "kyber512")){
+    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, groups_) || !sk_OPENSSL_STRING_push(ssl_args_, alg_)){
        printf("ssl_args setting fail");
        goto end;
     }
