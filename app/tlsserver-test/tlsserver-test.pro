@@ -20,7 +20,7 @@ HEADERS += \
 	../../src/tlssession.h
 
 #shared objects linking
-LIBS += -L$$PWD/../../lib/ -lssl -lcrypto -loqs
+LIBS += -L$$PWD/../../lib/ -lssl -lcrypto -oqs
 
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
