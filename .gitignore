@@ -1,5 +1,11 @@
+#vscode
 .vscode/
+
+#qt, build
 *.user
 bin/
 build-*/
 
+#lib, include
+include/
+lib/
