@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 		Param::usage();
 		return -1;
     }
-    cs.pemFileName_ = "/home/user/project/git/pqc-app/src/crt/rootCA.pem";
+    cs.pemFileName_ = "crt/spx_CA.pem";
             //명시안하면
     if (!cs.start(param.port_)) {
 		std::cerr << cs.error_ << std::endl;

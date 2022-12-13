@@ -19,26 +19,8 @@ HEADERS += \
         ../../src/tlsclient.h \
         ../../src/tlssession.h
 
-#libssl.a
-unix:!macx: LIBS += -L$$PWD/../../lib/ -lssl
+#shared objects linking
+LIBS += -L$$PWD/../../lib/ -lssl -lcrypto -loqs
 
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../lib/libssl.a
-
-#libcrypto.a
-unix:!macx: LIBS += -L$$PWD/../../lib/ -lcrypto
-
-INCLUDEPATH += $$PWD/../../include
-DEPENDPATH += $$PWD/../../include
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../lib/libcrypto.a
-
-#liboqs.a
-unix:!macx: LIBS += -L$$PWD/../../oqs/lib/ -loqs
-
-INCLUDEPATH += $$PWD/../../oqs/include
-DEPENDPATH += $$PWD/../../oqs/include
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../oqs/lib/liboqs.a

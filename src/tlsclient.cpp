@@ -1,6 +1,6 @@
 #include "tlsclient.h"
 
-int config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
+int TlsClient::config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
                SSL_CTX *ctx){
     int i;
     SSL_CONF_CTX_set_ssl_ctx(cctx, ctx);
@@ -9,43 +9,28 @@ int config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str,
         const char *flag = sk_OPENSSL_STRING_value(str, i);
         const char *arg = sk_OPENSSL_STRING_value(str, i + 1);
         SSL_CONF_cmd(cctx, flag, arg);
-      /*
-        if (SSL_CONF_cmd(cctx, flag, arg) <= 0) {
-            if (arg != NULL)
-                BIO_printf(bio_err, "Error with command: \"%s %s\"\n",
-                           flag, arg);
-            else
-                BIO_printf(bio_err, "Error with command: \"%s\"\n", flag);
-            ERR_print_errors(bio_err);
-            return 0;
-        }
-      */
+        /*error*/
     }
     SSL_CONF_CTX_finish(cctx);
-    /*
-    if (!SSL_CONF_CTX_finish(cctx)) {
-        BIO_puts(bio_err, "Error finishing context\n");
-        ERR_print_errors(bio_err);
-        return 0;
-    }
-    */
+    /*error*/
     return 1;
 }
 
 
 bool TlsClient::connect(Ip ip, int port) {
+    std::string groups = "-groups"; //groups flag
+    std::string alg = "kyber512";   //algorithm name
+
     if (!tcpClient_.connect(ip, port)) {
 		error_ = tcpClient_.error_;
 		return false;
 	}
-	std::string groups_ = "-groups";
-    std::string alg_ = "kyber512";
 
     /*for SSL_CONF_CTX flag set*/
 	if (ssl_args_ == NULL){
 		ssl_args_ = sk_OPENSSL_STRING_new_null();
 	}
-    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, groups_.data()) || !sk_OPENSSL_STRING_push(ssl_args_, alg_.data())){
+    if (ssl_args_ == NULL || !sk_OPENSSL_STRING_push(ssl_args_, groups.data()) || !sk_OPENSSL_STRING_push(ssl_args_, alg.data())){
        printf("ssl_args setting fail");
 	   return false;
     }
@@ -60,15 +45,12 @@ bool TlsClient::connect(Ip ip, int port) {
 	assert(ctx_ != nullptr);
 
 	sock_ = tcpClient_.sock_;
-    config_ctx(cctx_, ssl_args_, ctx_); //call config_ctx() -> setting flag and kyber512's nid
-    /*
-     * if(config_ctx(cctx_, ssl_args_, ctx_) <= 0){
+    if(config_ctx(cctx_, ssl_args_, ctx_) <= 0){
 		char buf[256];
-        sprintf(buf, "config_ctx() error | tlsclient.cpp line: 62");
+        sprintf(buf, "config_ctx() error | tlsclient.cpp line: 48");
 		error_ = buf;
 		return false;
-        }
-    */
+    }
 
 	ssl_ = SSL_new(ctx_);
 	assert(ssl_ != nullptr);
