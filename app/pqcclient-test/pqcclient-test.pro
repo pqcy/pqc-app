@@ -3,7 +3,9 @@ CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 INCLUDEPATH += ../../src
-LIBS += -lssl -lcrypto
+LIBS += -L../../lib/libssl.a \
+        -L../../lib/libcrypto.a \
+        -L../../oqs/lib/liboqs.a
 DESTDIR=../../bin
 SOURCES += \
         ../../src/pqcclient.cpp \

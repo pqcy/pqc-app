@@ -1,5 +1,5 @@
 #include "tlsserver.h"
-
+#include <cstring>
 #include <mutex>
 
 bool TlsServer::start(int port) {

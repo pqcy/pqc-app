@@ -3,7 +3,6 @@ CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 INCLUDEPATH += ../../src
-LIBS += -lssl -lcrypto
 DESTDIR=../../bin
 SOURCES += \
         ../../src/tcpclient.cpp \
@@ -19,3 +18,9 @@ HEADERS += \
         ../../src/tcpsession.h \
         ../../src/tlsclient.h \
         ../../src/tlssession.h
+
+#shared objects linking
+LIBS += -L$$PWD/../../lib/ -lssl -lcrypto -loqs
+
+INCLUDEPATH += $$PWD/../../include
+DEPENDPATH += $$PWD/../../include
