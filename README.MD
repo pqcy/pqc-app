@@ -18,10 +18,10 @@ $ ninja install
 go to <OPENSSL_DIR> <br>
 $ ./config --debug <br>
 $  make -j
-<br> <br>
+<br><br>
 $ cp <OPENSSL_DIR>/libssl.so.1.1 pqc-app/lib/ <br>
 $ cp <OPENSSL_DIR>/libcrypto.so.1.1 pqc-app/lib/ <br>
-$ cp <OPENSSL_DIR>/oqs/lib/liboqs.so pqc-app/lib/ <br>
+$ cp <OPENSSL_DIR>/oqs/lib/liboqs.so.2 pqc-app/lib/ <br>
 $ cp -r <OPENSSL_DIR>/include/ pqc-app/include/ <br>
-$ cp -r <OPENSSL_DIR>/oqs/include/ pqc-app/include/
+$ cp -r <OPENSSL_DIR>/oqs/include/oqs/ pqc-app/include/
 
