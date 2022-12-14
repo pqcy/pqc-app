@@ -20,23 +20,22 @@ mkdir build && cd build
 cmake -GNinja -DCMAKE_INSTALL_PREFIX=../../openssl/oqs ..
 ninja
 ninja install
+cd ../..
 ```
 
 ### Build openssl
 ```
-cd ../../openssl
+cd openssl
 ./config --debug
 make -j
+cd ..
 ```
 
 ### Install header and library files
 ```
-cp ./libssl.so.1.1 ../pqc-app/lib/
-cp ./libssl.so ../pqc-app/lib/
-cp ./libcrypto.so.1.1 ../pqc-app/lib/
-cp ./libcrypto.so ../pqc-app/lib/
-cp -r ./include/crypto ../pqc-app/include/
-cp -r ./include/openssl ../pqc-app/include/
-cp -r ./include/internal ../pqc-app/include/
-cp -r ./oqs/include/oqs/ ../pqc-app/include/
+cp openssl/lib*.so /pqc-app/lib/
+cp -r openssl/include/crypto pqc-app/include/
+cp -r openssl/include/openssl pqc-app/include/
+cp -r openssl/include/internal pqc-app/include/
+cp -r openssl/oqs/include/oqs/ pqc-app/include/
 ```
