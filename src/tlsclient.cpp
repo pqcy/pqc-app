@@ -1,12 +1,28 @@
 #include "tlsclient.h"
 
-int TlsClient::config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str, SSL_CTX *ctx){
+int TlsClient::config_ctx(SSL_CTX *ctx){
     int i;
+    STACK_OF(OPENSSL_STRING) *ssl_args = nullptr; //groups flag, kem alg id
+    std::string groups = "-groups"; //groups flag
+    std::string alg = "kyber512";   //PQC Algorithm name
+    SSL_CONF_CTX *cctx{nullptr};
+
+    cctx = SSL_CONF_CTX_new();
+    SSL_CONF_CTX_set_flags(cctx, SSL_CONF_FLAG_CLIENT | SSL_CONF_FLAG_CMDLINE);
     SSL_CONF_CTX_set_ssl_ctx(cctx, ctx);
 
-    for (i = 0; i < sk_OPENSSL_STRING_num(str); i += 2) {
-        const char *flag = sk_OPENSSL_STRING_value(str, i);
-        const char *arg = sk_OPENSSL_STRING_value(str, i + 1);
+    /*for SSL_CONF_CTX flag set*/
+    if (ssl_args == NULL){
+        ssl_args = sk_OPENSSL_STRING_new_null();
+    }
+    if (ssl_args == NULL || !sk_OPENSSL_STRING_push(ssl_args, groups.data()) || !sk_OPENSSL_STRING_push(ssl_args, alg.data())){
+        printf("[Error] Memory allcotated\nPlease try again.\n");
+       return false;
+    }
+
+    for (i = 0; i < sk_OPENSSL_STRING_num(ssl_args); i += 2) {
+        const char *flag = sk_OPENSSL_STRING_value(ssl_args, i);
+        const char *arg = sk_OPENSSL_STRING_value(ssl_args, i + 1);
         if(SSL_CONF_cmd(cctx, flag, arg) <= 0){
             if(arg != NULL){
                 printf("[Algorithms Set] flag: \"%s\", Algorithm name: \"%s\"\n", flag, arg);
@@ -30,34 +46,21 @@ int TlsClient::config_ctx(SSL_CONF_CTX *cctx, STACK_OF(OPENSSL_STRING) *str, SSL
 bool TlsClient::connect(Ip ip, int port) {
     OpenSSL_add_all_algorithms(); /* Load cryptos, et.al. */
     SSL_load_error_strings(); /* Bring in and register error messages */
-    STACK_OF(OPENSSL_STRING) *ssl_args = nullptr; //groups flag, kem alg id
-    std::string groups = "-groups"; //groups flag
-    std::string alg = "kyber512";   //PQC Algorithm name
 
     if (!tcpClient_.connect(ip, port)) {
         error_ = tcpClient_.error_;
         return false;
     }
+
     const SSL_METHOD *method = TLS_client_method();
-    SSL_CONF_CTX *cctx{nullptr};
-    cctx = SSL_CONF_CTX_new();
     ctx_ = SSL_CTX_new(method);
-    SSL_CONF_CTX_set_flags(cctx, SSL_CONF_FLAG_CLIENT | SSL_CONF_FLAG_CMDLINE);
+
     assert(ctx_ != nullptr);
 
     sock_ = tcpClient_.sock_;
 
-    /*for SSL_CONF_CTX flag set*/
-    if (ssl_args == NULL){
-        ssl_args = sk_OPENSSL_STRING_new_null();
-    }
-    if (ssl_args == NULL || !sk_OPENSSL_STRING_push(ssl_args, groups.data()) || !sk_OPENSSL_STRING_push(ssl_args, alg.data())){
-       printf("[Error] Memory allcotated\nPlease try again.\n");
-       return false;
-    }
-
     /*PQC Algorithms Set*/
-    if(config_ctx(cctx, ssl_args, ctx_) <= 0){
+    if(config_ctx(ctx_) <= 0){
         printf("[Error] fail to TLS set\n");
         return false;
     }
