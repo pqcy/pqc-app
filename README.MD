@@ -3,7 +3,7 @@ Chatting programm using PQC TLS
 
 ### Prerequisite
 ```
-$ sudo apt install cmake gcc libtool libssl-dev make ninja-build git
+sudo apt install cmake gcc libtool libssl-dev make ninja-build git
 ```
 
 ### Git clone
