@@ -36,7 +36,7 @@ cp ./libssl.so ../pqc-app/lib/
 cp ./libcrypto.so.1.1 ../pqc-app/lib/
 cp ./libcrypto.so ../pqc-app/lib/
 cp ./oqs/lib/liboqs.so.2 ../pqc-app/lib/
-cp ./oqs/lib/liboqs.so .../pqc-app/lib/
+cp ./oqs/lib/liboqs.so ../pqc-app/lib/
 cp -r ./include/crypto ../pqc-app/include/
 cp -r ./include/openssl ../pqc-app/include/
 cp -r ./include/internal ../pqc-app/include/
