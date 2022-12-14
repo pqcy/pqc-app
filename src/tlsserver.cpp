@@ -71,7 +71,7 @@ bool TlsServer::start(int port) {
 bool TlsServer::stop() {
 	::shutdown(acceptSock_, SHUT_RDWR);
 	::close(acceptSock_);
-//    ::SSL_CTX_free(ctx_);
+    ::SSL_CTX_free(ctx_);
 	if (acceptThread_ != nullptr) {
 		delete acceptThread_;
 		acceptThread_ = nullptr;
