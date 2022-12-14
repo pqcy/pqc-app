@@ -34,7 +34,7 @@ struct Param {
 
 	static void usage() {
 		printf("syntax : tcpserver-test <port>\n");
-		printf("sample : tcpserver-test <port>\n");
+        printf("sample : tcpserver-test 12345\n");
 	}
 };
 

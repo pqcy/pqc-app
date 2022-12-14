@@ -36,7 +36,7 @@ struct Param {
 
 	static void usage() {
         printf("syntax : tlsserver-test <port> <pem file name>\n");
-        printf("sample : tlsserver-test <port> <pem file name>\n");
+        printf("sample : tlsserver-test 12345 crt/spx_CA.pem\n");
 	}
 };
 
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
 		Param::usage();
 		return -1;
     }
-    cs.pemFileName_ = "crt/" + param.pem;
+    cs.pemFileName_ = param.pem;
 
     if (!cs.start(param.port)) {
 		std::cerr << cs.error_ << std::endl;
