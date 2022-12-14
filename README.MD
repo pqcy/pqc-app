@@ -7,9 +7,11 @@ $ sudo apt install cmake gcc libtool libssl-dev make ninja-build git
 ```
 
 ### Git clone
+```
 git clone --branch main https://github.com/open-quantum-safe/liboqs.git
 git clone https://github.com/open-quantum-safe/openssl.git
 git clone git@github.com:pqcy/pqc-app.git
+```
 
 ### Build oqs
 ```
@@ -37,4 +39,3 @@ cp -r ./include/openssl ../pqc-app/include/
 cp -r ./include/internal ../pqc-app/include/
 cp -r ./oqs/include/oqs/ ../pqc-app/include/
 ```
-
