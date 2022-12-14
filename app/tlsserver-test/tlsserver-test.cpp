@@ -24,17 +24,19 @@ protected:
 };
 
 struct Param {
-	int port_;
+    int port;
+    std::string pem;
 
 	bool parse(int argc, char** argv) {
-		if (argc != 2) return false;
-		port_ = std::stoi(argv[1]);
+        if (argc != 3) return false;
+        port = std::stoi(argv[1]);
+        pem = argv[2];
 		return true;
 	}
 
 	static void usage() {
-        printf("syntax : tlsserver-test <port>\n");
-        printf("sample : tlsserver-test <port>\n");
+        printf("syntax : tlsserver-test <port> <pem file name>\n");
+        printf("sample : tlsserver-test <port> <pem file name>\n");
 	}
 };
 
@@ -46,9 +48,9 @@ int main(int argc, char* argv[]) {
 		Param::usage();
 		return -1;
     }
-    cs.pemFileName_ = "crt/spx_CA.pem";
-            //명시안하면
-    if (!cs.start(param.port_)) {
+    cs.pemFileName_ = "crt/" + param.pem;
+
+    if (!cs.start(param.port)) {
 		std::cerr << cs.error_ << std::endl;
 		return -1;
 	}
