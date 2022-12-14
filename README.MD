@@ -33,7 +33,7 @@ cd ..
 
 ### Install header and library files
 ```
-cp openssl/lib*.so pqc-app/lib/
+cp openssl/lib*.so* pqc-app/lib/
 cp -r openssl/include/crypto pqc-app/include/
 cp -r openssl/include/openssl pqc-app/include/
 cp -r openssl/include/internal pqc-app/include/
