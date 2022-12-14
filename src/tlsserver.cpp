@@ -17,6 +17,8 @@ bool TlsServer::start(int port) {
     if ( SSL_CTX_use_certificate_file(ctx_, pemFileName_.data(), SSL_FILETYPE_PEM) <= 0 )
         {
             ERR_print_errors_fp(stderr);
+            printf("\n[NOTICE] Check a export LD_LIBRARY_PATH=pqc-app/lib\n");
+            printf("[NOTICE] Check a name is pqc-app/lib\n");
             abort();
         }
     if ( SSL_CTX_use_PrivateKey_file(ctx_, pemFileName_.data(), SSL_FILETYPE_PEM) <= 0 )
