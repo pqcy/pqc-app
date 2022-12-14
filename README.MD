@@ -22,7 +22,7 @@ ninja
 ninja install
 ```
 
-### Build openssdl
+### Build openssl
 ```
 cd ../../openssl
 ./config --debug
