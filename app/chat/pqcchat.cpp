@@ -8,6 +8,8 @@ PqcChat::PqcChat(QWidget *parent)
     ui->setupUi(this);
     rthread = new RThread();
     connect(rthread, SIGNAL(readMsg(char*)), this, SLOT(showMsg(char*)));
+    ui->btnClose->setEnabled(false);
+    ui->btnSend->setEnabled(false);
 }
 
 PqcChat::~PqcChat()
@@ -34,6 +36,10 @@ void PqcChat::on_btnConn_clicked() {
     ui->textChat->append("서버 연결");
     rthread->tc = &tc;
     rthread->start();
+
+    ui->btnConn->setEnabled(false);
+    ui->btnClose->setEnabled(true);
+    ui->btnSend->setEnabled(true);
 }
 
 void PqcChat::on_btnClose_clicked() {
@@ -41,6 +47,9 @@ void PqcChat::on_btnClose_clicked() {
     tc.close();
     ui->textChat->append("연결 종료");
 
+    ui->btnConn->setEnabled(true);
+    ui->btnClose->setEnabled(false);
+    ui->btnSend->setEnabled(false);
 }
 
 void PqcChat::on_btnSend_clicked() {
