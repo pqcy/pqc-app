@@ -18,15 +18,14 @@ PqcChat::~PqcChat()
 }
 
 void PqcChat::showMsg(char* msg) {
-
     ui->textChat->append(msg);
-
 }
 
 void PqcChat::on_btnConn_clicked() {
     std::string ip, port;
     ip = ui->ip->text().toStdString();
     port = ui->port->text().toStdString();
+    name_ = ui->name->text().toStdString();
 
     if (!tc.connect(inet_addr(ip.data()), std::stoi(port.data())) ) {
         std::cerr << tc.error_ << std::endl;
@@ -56,10 +55,12 @@ void PqcChat::on_btnSend_clicked() {
     QString msg;
     msg = ui->msg->text();
     ui->msg->setText("");
-    int writeLen = tc.write(msg.toStdString().data(), msg.size());
+    std::string res = name_ + " : " + msg.toStdString();
+    int writeLen = tc.write(res.data(), res.size());
 
-    if (writeLen != -1 )
-        ui->textChat->append(msg);
+    if (writeLen != -1 ) {
+        ui->textChat->append(res.data());
+    }
 }
 
 

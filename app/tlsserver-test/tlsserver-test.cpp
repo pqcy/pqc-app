@@ -8,7 +8,7 @@ struct ChatServer : public TlsServer {
 protected:
 	void run(Session* session) override {
 		std::puts("connected");
-		char buf[256];
+        char buf[512];
 		while (true) {
 			int res = session->read(buf, 256);
 			if (res <= 0) break;
