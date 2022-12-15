@@ -142,6 +142,9 @@
      <string notr="true">background-color:white</string>
     </property>
     <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
      <string>127.0.0.1</string>
     </property>
    </widget>
@@ -158,6 +161,9 @@
      <string notr="true">background-color:white</string>
     </property>
     <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
      <string>12345</string>
     </property>
    </widget>
@@ -172,6 +178,9 @@
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:white</string>
+    </property>
+    <property name="placeholderText">
+     <string>전송할 메세지를 입력하세요....</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnClose">
@@ -200,6 +209,9 @@
      <string notr="true">background-color:white</string>
     </property>
     <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
      <string>your name</string>
     </property>
    </widget>

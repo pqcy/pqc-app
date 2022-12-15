@@ -8,6 +8,7 @@ PqcChat::PqcChat(QWidget *parent)
     ui->setupUi(this);
     rthread = new RThread();
     connect(rthread, SIGNAL(readMsg(char*)), this, SLOT(showMsg(char*)));
+    connect(this, SIGNAL(returnPresed()), this, SLOT(on_btnSend_clicked()));
     ui->btnClose->setEnabled(false);
     ui->btnSend->setEnabled(false);
 }
@@ -22,12 +23,22 @@ void PqcChat::showMsg(char* msg) {
 }
 
 void PqcChat::on_btnConn_clicked() {
-    std::string ip, port;
+    std::string ip;
+    int port;
     ip = ui->ip->text().toStdString();
-    port = ui->port->text().toStdString();
+    port = ui->port->text().toInt();
+    if (port <= 0) {
+            ui->textChat->append("포트 번호를 다시 입력해주세요.");
+            return;
+        }
+    printf("%d\n", port);
     name_ = ui->name->text().toStdString();
+    if (name_ == "") {
+        ui->textChat->append("이름을 입력해주세요.");
+        return;
+    }
 
-    if (!tc.connect(inet_addr(ip.data()), std::stoi(port.data())) ) {
+    if (!tc.connect(inet_addr(ip.data()), port) ) {
         std::cerr << tc.error_ << std::endl;
         ui->textChat->append("연결 실패");
         return;
@@ -68,6 +79,4 @@ void PqcChat::on_btnSend_clicked() {
         ui->textChat->append(res.data());
     }
 }
-
-
 

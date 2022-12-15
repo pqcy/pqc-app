@@ -19,8 +19,6 @@ public:
     ~PqcChat();
     TlsClient tc;
     std::string name_;
-//signals:
-//    void readMsg(char* msg);
 private slots:
     void on_btnConn_clicked();
     void on_btnSend_clicked();
