@@ -39,6 +39,9 @@ void PqcChat::on_btnConn_clicked() {
     ui->btnConn->setEnabled(false);
     ui->btnClose->setEnabled(true);
     ui->btnSend->setEnabled(true);
+    ui->ip->setEnabled(false);
+    ui->port->setEnabled(false);
+    ui->name->setEnabled(false);
 }
 
 void PqcChat::on_btnClose_clicked() {
@@ -49,6 +52,9 @@ void PqcChat::on_btnClose_clicked() {
     ui->btnConn->setEnabled(true);
     ui->btnClose->setEnabled(false);
     ui->btnSend->setEnabled(false);
+    ui->ip->setEnabled(true);
+    ui->port->setEnabled(true);
+    ui->name->setEnabled(true);
 }
 
 void PqcChat::on_btnSend_clicked() {
