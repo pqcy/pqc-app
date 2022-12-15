@@ -5,4 +5,5 @@ SUBDIRS += \
         tlsclient-test \
         tlsserver-test \
 	vpnclient-test \
-	vpnserver-test
+        vpnserver-test \
+        chat

@@ -15,8 +15,9 @@ protected:
 			buf[res] = '\0';
 			std::puts(buf);
 			sessions_.lock();
-            for (TlsSession* session: sessions_)
-				session->write(buf, res);
+            for (TlsSession* sessionList: sessions_)
+                if (session != sessionList)
+                    sessionList->write(buf, res);
 			sessions_.unlock();
 		}
 		std::puts("disconnected");
