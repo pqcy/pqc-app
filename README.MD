@@ -49,4 +49,5 @@ cp ./spx_CA.pem ../pqc-app/bin/crt/
    
 # Open a file that chat.pro with Qt creator (Open Project)
 File Location - pqc-app/app/chat.pro   
-Qt creator's Projects tab - run tab - "Run as a root user" check
+Qt creator's Projects tab - run tab - "Run as a root user" check   
+Now you can run the program
