@@ -46,3 +46,7 @@ apps/openssl req -x509 -new -newkey sphincssha256128frobust -keyout spx_CA.key -
 cat spx_CA.key spx_CA.crt >> spx_CA.pem
 cp ./spx_CA.pem ../pqc-app/bin/crt/
 ```
+   
+# Open a file that chat.pro with Qt creator (Open Project)
+File Location - pqc-app/app/chat.pro   
+Qt creator's Projects tab - run tab - "Run as a root user" check
