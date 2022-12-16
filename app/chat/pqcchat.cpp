@@ -8,7 +8,6 @@ PqcChat::PqcChat(QWidget *parent)
     ui->setupUi(this);
     rthread = new RThread();
     connect(rthread, SIGNAL(readMsg(char*)), this, SLOT(showMsg(char*)));
-    connect(this, SIGNAL(returnPresed()), this, SLOT(on_btnSend_clicked()));
     ui->btnClose->setEnabled(false);
     ui->btnSend->setEnabled(false);
 }
