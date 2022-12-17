@@ -2,9 +2,8 @@ Chatting programm using PQC TLS
 ===
 
 ### Prerequisite
-+ You have to install qmake
 ```
-sudo apt install cmake gcc libtool libssl-dev make ninja-build git
+sudo apt install cmake gcc libtool libssl-dev make ninja-build git qt5-default qt5-qmake
 ```
 
 ### Git clone
