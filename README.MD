@@ -3,7 +3,7 @@ Chatting programm using PQC TLS
 
 ### Prerequisite
 ```
-sudo apt install cmake gcc libtool libssl-dev make ninja-build git qt5-default qt5-qmake
+sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
 ```
 
 ### Git clone
