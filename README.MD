@@ -66,7 +66,7 @@ activate = 1
 module = \$ENV::OPENSSL_MODULES/oqsprovider.so
 EOL
 
-
+export LD_LIBRARY_PATH=./:$LD_LIBRARY_PATH
 export OPENSSL_MODULES=$(pwd)/ossl-modules
 export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
 
