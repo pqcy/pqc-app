@@ -46,7 +46,7 @@ cd ..
 ### Configurate Openssl-Provider
 ```
 cd openssl
-cat <<EOL > ./ssl/openssl.cnf
+cat <<EOL >> ./apps/openssl.cnf
 openssl_conf = openssl_init
 
 [openssl_init]
@@ -58,8 +58,9 @@ oqsprovider = oqsprovider
 
 EOL
 
-export OPENSSL_CONF=$(pwd)/ssl/openssl.cnf
+export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
 export OPENSSL_MODULES=$(pwd)/ossl-modules
+
 ```
 
 ### Install header and library files
@@ -73,7 +74,7 @@ cp -r openssl/include/internal pqc-app/include/
 ### Make and apply a SPHINCS+ PEM File
 ```
 cd openssl
-apps/openssl req -x509 -new -newkey sphincssha256128frobust -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/CN=sphincs+ CA" -days 365 -config apps/openssl.cnf
+apps/openssl req -x509 -new -newkey sphincssha2128fsimple -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/CN=sphincs+ CA" -days 365 -config apps/openssl.cnf
 cat spx_CA.key spx_CA.crt >> spx_CA.pem
 cp ./spx_CA.pem ../pqc-app/bin/crt/
 ```
