@@ -45,6 +45,7 @@ cd ..
 ```
 
 ### Configurate Openssl-Provider
+## you have to set ENVs before make pem or move a libary etc..
 ```
 cd openssl
 cat <<EOL >> ./apps/openssl.cnf
