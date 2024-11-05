@@ -4,7 +4,8 @@ Chatting programm using PQC TLS
 This programm need OpenSSL 3.x, liboqs, oqs-provider
 ### Prerequisite
 ```
-sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
+sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind libpcap-dev libnet1 libnet1-dev
+
 ```
 
 ### Git clone
@@ -46,20 +47,29 @@ cd ..
 ### Configurate Openssl-Provider
 ```
 cd openssl
-cat <<EOL > ./ssl/openssl.cnf
+cat <<EOL >> ./apps/openssl.cnf
 openssl_conf = openssl_init
 
 [openssl_init]
 providers = provider_sect
 
 [provider_sect]
-default = default
-oqsprovider = oqsprovider
+default = default_sect
+oqsprovider = oqsprovider_sect
 
+[default_sect]
+activate = 1
+
+[oqsprovider_sect]
+activate = 1
+module = \$ENV::OPENSSL_MODULES/oqsprovider.so
 EOL
 
-export OPENSSL_CONF=$(pwd)/ssl/openssl.cnf
+
 export OPENSSL_MODULES=$(pwd)/ossl-modules
+export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
+
+
 ```
 
 ### Install header and library files
@@ -73,7 +83,7 @@ cp -r openssl/include/internal pqc-app/include/
 ### Make and apply a SPHINCS+ PEM File
 ```
 cd openssl
-apps/openssl req -x509 -new -newkey sphincssha256128frobust -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/CN=sphincs+ CA" -days 365 -config apps/openssl.cnf
+apps/openssl req -x509 -new -newkey sphincssha2128fsimple -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/C=KR/CN=hostname" -days 365 -config apps/openssl.cnf 
 cat spx_CA.key spx_CA.crt >> spx_CA.pem
 cp ./spx_CA.pem ../pqc-app/bin/crt/
 ```
