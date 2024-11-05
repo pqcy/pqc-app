@@ -22,7 +22,7 @@ cd liboqs
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Debug -GNinja ..
 ninja
-ninja install
+sudo ninja install
 cd ../..
 ```
 
