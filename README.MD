@@ -75,6 +75,9 @@ cd ..
 ### Make and apply a SPHINCS+ PEM File
 ```
 cd openssl
+export LD_LIBRARY_PATH=./:$LD_LIBRARY_PATH
+export OPENSSL_MODULES=$(pwd)/ossl-modules
+export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
 apps/openssl req -x509 -new -newkey sphincssha2128fsimple -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/C=KR/CN=hostname" -days 365 -config apps/openssl.cnf 
 cat spx_CA.key spx_CA.crt >> spx_CA.pem
 cp ./spx_CA.pem ../pqc-app/bin/crt/
