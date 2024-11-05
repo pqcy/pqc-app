@@ -70,7 +70,7 @@ EOL
 export OPENSSL_MODULES=$(pwd)/ossl-modules
 export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
 
-
+cd ..
 ```
 ### Make and apply a SPHINCS+ PEM File
 ```
