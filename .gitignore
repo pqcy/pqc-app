@@ -3,9 +3,17 @@
 
 #qt, build
 *.user
-bin/
 build-*/
-
+app/*/*.o
+app/*/Makefile
+app/Makefile
+bin/
+bin/crt/*
+app/.qmake*
+moc_predefs.h
 #lib, include
 include/
 lib/
+#pem
+
+
