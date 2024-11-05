@@ -53,13 +53,21 @@ openssl_conf = openssl_init
 providers = provider_sect
 
 [provider_sect]
-default = default
-oqsprovider = oqsprovider
+default = default_sect
+oqsprovider = oqsprovider_sect
 
+[default_sect]
+activate = 1
+
+[oqsprovider_sect]
+activate = 1
+module = \$ENV::OPENSSL_MODULES/oqsprovider.so
 EOL
 
-export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
+
 export OPENSSL_MODULES=$(pwd)/ossl-modules
+export OPENSSL_CONF=$(pwd)/apps/openssl.cnf
+
 
 ```
 
