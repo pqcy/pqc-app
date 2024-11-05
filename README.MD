@@ -82,7 +82,7 @@ cp -r openssl/include/internal pqc-app/include/
 ### Make and apply a SPHINCS+ PEM File
 ```
 cd openssl
-apps/openssl req -x509 -new -newkey sphincssha2128fsimple -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/CN=sphincs+ CA" -days 365 -config apps/openssl.cnf
+apps/openssl req -x509 -new -newkey sphincssha2128fsimple -keyout spx_CA.key -out spx_CA.crt -nodes -subj "/C=KR/CN=hostname" -days 365 -config apps/openssl.cnf 
 cat spx_CA.key spx_CA.crt >> spx_CA.pem
 cp ./spx_CA.pem ../pqc-app/bin/crt/
 ```
