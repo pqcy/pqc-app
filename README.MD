@@ -4,7 +4,7 @@ Chatting programm using PQC TLS
 This programm need OpenSSL 3.x, liboqs, oqs-provider
 ### Prerequisite
 ```
-sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
+sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind libpcap-dev
 ```
 
 ### Git clone
