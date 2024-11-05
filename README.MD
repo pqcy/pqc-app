@@ -1,15 +1,17 @@
 Chatting programm using PQC TLS
 ===
-
+### Comment
+This programm need OpenSSL 3.x, liboqs, oqs-provider
 ### Prerequisite
 ```
-sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
 ```
 
 ### Git clone
 ```
 git clone --branch main https://github.com/open-quantum-safe/liboqs.git
-git clone https://github.com/open-quantum-safe/openssl.git
+git clone https://github.com/open-quantum-safe/oqs-provider.git
+https://github.com/openssl/openssl.git
 git clone git@github.com:pqcy/pqc-app.git
 ```
 
@@ -17,7 +19,7 @@ git clone git@github.com:pqcy/pqc-app.git
 ```
 cd liboqs
 mkdir build && cd build
-cmake -GNinja -DCMAKE_INSTALL_PREFIX=../../openssl/oqs ..
+cmake -DCMAKE_BUILD_TYPE=Debug -GNinja ..
 ninja
 ninja install
 cd ../..
@@ -30,14 +32,43 @@ cd openssl
 make -j
 cd ..
 ```
+### using oqs-provider
+```
+cd oqs-provider
+env OPENSSL_ROOT_DIR="../openssl" \
+    liboqs_DIR="../liboqs" \
+    MAKE_PARAMS="-j" \
+    CMAKE_PARAMS="-DCMAKE_BUILD_TYPE=Debug" \
+    bash scripts/fullbuild.sh
+cd ..
+```
+
+### Configurate Openssl-Provider
+```
+cd openssl
+cat <<EOL > ./ssl/openssl.cnf
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default
+oqsprovider = oqsprovider
+
+EOL
+
+export OPENSSL_CONF=$(pwd)/ssl/openssl.cnf
+export OPENSSL_MODULES=$(pwd)/ossl-modules
+```
 
 ### Install header and library files
 ```
 cp openssl/lib*.so* pqc-app/lib/
+cp -r openssl/ossl-modules pqc-app/lib/
 cp -r openssl/include/crypto pqc-app/include/
 cp -r openssl/include/openssl pqc-app/include/
 cp -r openssl/include/internal pqc-app/include/
-cp -r openssl/oqs/include/oqs/ pqc-app/include/
 ```
 ### Make and apply a SPHINCS+ PEM File
 ```
