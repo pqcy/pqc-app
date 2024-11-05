@@ -12,7 +12,7 @@ sudo apt install cmake gcc libtool libssl-dev make ninja-build git qtbase5-dev q
 ```
 git clone --branch main https://github.com/open-quantum-safe/liboqs.git
 git clone https://github.com/open-quantum-safe/oqs-provider.git
-https://github.com/openssl/openssl.git
+git clone https://github.com/openssl/openssl.git
 git clone git@github.com:pqcy/pqc-app.git
 ```
 
