@@ -1,8 +1,24 @@
 #include "tlsserver.h"
 #include <cstring>
 #include <mutex>
+#include <openssl/provider.h>
+
+int TlsServer::load_oqs_provider() {
+    OSSL_PROVIDER *oqsprov = OSSL_PROVIDER_load(nullptr, "oqsprovider");
+    if (oqsprov == nullptr) {
+        printf("[Error] Failed to load oqsprovider\n");
+        return 0;
+    }
+    printf("[INFO] oqsprovider loaded successfully\n");
+    return 1;
+}
 
 bool TlsServer::start(int port) {
+    //check_env_path(); //환경변수 예외처리 함수
+    if (!load_oqs_provider()) {
+        printf("[Error] Failed to load oqsprovider. Ensure that oqsprovider is correctly installed and configured.\n");
+        return false;
+    }
 
     OpenSSL_add_all_algorithms();  /* load & register all cryptos, etc. */
     SSL_load_error_strings();   /* load all error messages */
@@ -14,23 +30,30 @@ bool TlsServer::start(int port) {
         abort();
     }
 
+    // TLS 1.3을 강제 설정
+    SSL_CTX_set_min_proto_version(ctx_, TLS1_3_VERSION);
+    SSL_CTX_set_max_proto_version(ctx_, TLS1_3_VERSION);
+
+	SSL_CTX_set_security_level(ctx_, 0); //SSL_CTX_set_security_level 함수로 보안 레벨을 낮추어 해당 키를 허용
+
     if ( SSL_CTX_use_certificate_file(ctx_, pemFileName_.data(), SSL_FILETYPE_PEM) <= 0 )
-        {
-            ERR_print_errors_fp(stderr);
-            printf("\n[NOTICE] Check a export LD_LIBRARY_PATH=pqc-app/lib\n");
-            printf("[NOTICE] Check a name is pqc-app/lib\n");
-            abort();
-        }
+    {
+        ERR_print_errors_fp(stderr);
+        printf("\n[NOTICE] Check a export LD_LIBRARY_PATH=pqc-app/lib\n");
+        printf("[NOTICE] Check a name is pqc-app/lib\n");
+        abort();
+    }
     if ( SSL_CTX_use_PrivateKey_file(ctx_, pemFileName_.data(), SSL_FILETYPE_PEM) <= 0 )
-        {
-            ERR_print_errors_fp(stderr);
-            abort();
-        }
+    {
+        ERR_print_errors_fp(stderr);
+        abort();
+    }
     if ( !SSL_CTX_check_private_key(ctx_) )
-        {
-            fprintf(stderr, "Private key does not match the public certificate\n");
-            abort();
-        }
+    {
+        fprintf(stderr, "Private key does not match the public certificate\n");
+        abort();
+    }
+
 	acceptSock_ = ::socket(AF_INET, SOCK_STREAM, 0);
 	if (acceptSock_ == -1) {
 		error_ = strerror(errno);
